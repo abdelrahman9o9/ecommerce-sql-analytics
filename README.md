@@ -82,6 +82,7 @@ The project is organized into the following analytical areas:
 ecommerce-sql-analytics/
 │
 ├── 01_sales_performance.sql
+├── 02_customer_analysis.sql
 ├── README.md
 └── ...
 ```
@@ -96,17 +97,22 @@ ecommerce-sql-analytics/
 | Pending Payment Value | Sum of payments with a pending status |
 | Failed Payment Value | Sum of payments with a failed status |
 | Average Order Value (AOV) | Valid Sales Value divided by the number of non-cancelled orders |
+| Total Spent | Sum of a customer's non-cancelled order item values |
+| Customer AOV | Customer's total spent divided by their number of non-cancelled orders |
+| Customer Rank | Customer ranking based on total spending, using DENSE_RANK() |
 
 Order item values are calculated using:
 
-`quantity * unit_price`
+```sql
+quantity * unit_price
+```
 
 Historical transaction prices from `order_items` are used instead of current product prices.
 
 ## Current Progress
 
 - [x] Sales Performance Overview
-- [ ] Customer Analysis
+- [x] Customer Analysis
 - [ ] Product & Category Analysis
 - [ ] Order Analysis
 - [ ] Payment Analysis
