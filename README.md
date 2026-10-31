@@ -4,7 +4,7 @@
 
 This project analyzes an E-Commerce database using PostgreSQL to extract business insights through SQL queries.
 
-The main objective is to analyze sales performance, customer behavior, product performance, payments, orders, and shipping operations.
+The main objective is to analyze sales performance, customer behavior, product performance, orders, payments, and shipping operations.
 
 The project demonstrates practical SQL skills used in Data Analysis and provides a foundation for further development toward Data Engineering.
 
@@ -22,13 +22,13 @@ The database contains seven tables:
 
 | Table | Description |
 |---|---|
-| customers | Customer information |
-| products | Product details and stock |
-| categories | Product categories |
-| orders | Customer orders and order statuses |
-| order_items | Products and quantities within each order |
-| payments | Payment amounts, methods, and statuses |
-| shipping | Shipping and delivery information |
+| `customers` | Customer information |
+| `products` | Product details and stock |
+| `categories` | Product categories |
+| `orders` | Customer orders and order statuses |
+| `order_items` | Products and quantities within each order |
+| `payments` | Payment amounts, methods, and statuses |
+| `shipping` | Shipping and delivery information |
 
 ## Analysis Scope
 
@@ -64,7 +64,9 @@ The project is organized into the following analytical areas:
 
 ### 5. Payment Analysis
 - Payment status distribution
+- Payment amount and average amount by status
 - Payment method performance
+- Paid, pending, and failed payment counts by method
 - Missing payment records
 
 ### 6. Shipping Analysis
@@ -87,6 +89,7 @@ ecommerce-sql-analytics/
 ├── 02_customer_analysis.sql
 ├── 03_product_category_analysis.sql
 ├── 04_order_analysis.sql
+├── 05_payment_analysis.sql
 └── README.md
 ```
 
@@ -99,14 +102,14 @@ ecommerce-sql-analytics/
 | Paid Revenue | Sum of payments with a paid status |
 | Pending Payment Value | Sum of payments with a pending status |
 | Failed Payment Value | Sum of payments with a failed status |
-| Average Order Value (AOV) | Valid Sales Value divided by the number of non-cancelled orders |
+| Average Order Value (AOV) | Valid Sales Value divided by the number of distinct non-cancelled orders |
 | Total Spent | Sum of a customer's non-cancelled order item values |
 | Customer AOV | Customer's total spent divided by their number of non-cancelled orders |
-| Customer Rank | Customer ranking based on total spending, using DENSE_RANK() |
+| Customer Rank | Customer ranking based on total spending, using `DENSE_RANK()` |
 | Units Sold | Total quantity sold for each product, excluding cancelled orders |
 | Total Orders per Product | Number of distinct non-cancelled orders containing each product |
 | Total Product Revenue | Sum of quantity multiplied by historical unit price for each product |
-| Product Rank | Product ranking based on revenue within its category, using DENSE_RANK() |
+| Product Rank | Product ranking based on revenue within its category, using `DENSE_RANK()` |
 | Cancellation Rate | Cancelled orders divided by total orders, multiplied by 100 |
 
 Order item values are calculated using:
@@ -117,7 +120,7 @@ quantity * unit_price
 
 Historical transaction prices from `order_items` are used instead of current product prices.
 
-Payment consistency is evaluated by comparing order statuses with payment statuses using predefined business rules.
+Payment consistency is evaluated by comparing order statuses with payment statuses using predefined business rules. This classification does not confirm that payment was collected.
 
 ## Current Progress
 
@@ -125,7 +128,7 @@ Payment consistency is evaluated by comparing order statuses with payment status
 - [x] Customer Analysis
 - [x] Product & Category Analysis
 - [x] Order Analysis
-- [ ] Payment Analysis
+- [x] Payment Analysis
 - [ ] Shipping Analysis
 - [ ] Data Quality Analysis
 
@@ -136,6 +139,10 @@ Payment consistency is evaluated by comparing order statuses with payment status
 - Order Value and Paid Revenue represent different business metrics.
 - Payment consistency indicates whether order and payment statuses follow the defined business rules; it does not confirm that payment was collected.
 - The current synthetic dataset contains one payment record per order.
+- The current dataset contains 15 orders: 13 non-cancelled and 2 cancelled.
+- Payment status distribution: 10 paid, 3 pending, and 2 failed.
+- The total payment amount is 19,110.00, while paid revenue is 15,750.00.
+- The missing payment records query currently returns no rows because every order has a matching payment record.
 - Products with no sales are included in Product & Category Analysis with zero sales metrics.
 - Product rankings are calculated independently within each category.
 - Profit analysis is outside the current scope because product cost data is not available.
