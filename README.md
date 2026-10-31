@@ -55,10 +55,12 @@ The project is organized into the following analytical areas:
 - Product ranking within each category
 
 ### 4. Order Analysis
+- Total, valid, and cancelled orders
 - Order status distribution
 - Cancellation rate
-- Unpaid orders
+- Order details and order value
 - Order and payment consistency
+- Identification of orders requiring payment review
 
 ### 5. Payment Analysis
 - Payment status distribution
@@ -84,6 +86,7 @@ ecommerce-sql-analytics/
 ├── 01_sales_performance.sql
 ├── 02_customer_analysis.sql
 ├── 03_product_category_analysis.sql
+├── 04_order_analysis.sql
 └── README.md
 ```
 
@@ -104,6 +107,7 @@ ecommerce-sql-analytics/
 | Total Orders per Product | Number of distinct non-cancelled orders containing each product |
 | Total Product Revenue | Sum of quantity multiplied by historical unit price for each product |
 | Product Rank | Product ranking based on revenue within its category, using DENSE_RANK() |
+| Cancellation Rate | Cancelled orders divided by total orders, multiplied by 100 |
 
 Order item values are calculated using:
 
@@ -113,12 +117,14 @@ quantity * unit_price
 
 Historical transaction prices from `order_items` are used instead of current product prices.
 
+Payment consistency is evaluated by comparing order statuses with payment statuses using predefined business rules.
+
 ## Current Progress
 
 - [x] Sales Performance Overview
 - [x] Customer Analysis
 - [x] Product & Category Analysis
-- [ ] Order Analysis
+- [x] Order Analysis
 - [ ] Payment Analysis
 - [ ] Shipping Analysis
 - [ ] Data Quality Analysis
@@ -128,6 +134,8 @@ Historical transaction prices from `order_items` are used instead of current pro
 - Cancelled orders are excluded from Valid Sales Value, AOV, and product sales metrics.
 - Pending and failed payments are not included in Paid Revenue.
 - Order Value and Paid Revenue represent different business metrics.
+- Payment consistency indicates whether order and payment statuses follow the defined business rules; it does not confirm that payment was collected.
+- The current synthetic dataset contains one payment record per order.
 - Products with no sales are included in Product & Category Analysis with zero sales metrics.
 - Product rankings are calculated independently within each category.
 - Profit analysis is outside the current scope because product cost data is not available.
