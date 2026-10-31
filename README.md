@@ -71,8 +71,9 @@ The project is organized into the following analytical areas:
 
 ### 6. Shipping Analysis
 - Shipping status distribution
-- Delivery performance
-- Shipping duration
+- Delivered shipments and delivery rate
+- Shipping duration per shipment
+- Average, longest, and shortest shipping duration
 - Missing shipping records
 
 ### 7. Data Quality Analysis
@@ -90,6 +91,7 @@ ecommerce-sql-analytics/
 ├── 03_product_category_analysis.sql
 ├── 04_order_analysis.sql
 ├── 05_payment_analysis.sql
+├── 06_shipping_analysis.sql
 └── README.md
 ```
 
@@ -111,6 +113,12 @@ ecommerce-sql-analytics/
 | Total Product Revenue | Sum of quantity multiplied by historical unit price for each product |
 | Product Rank | Product ranking based on revenue within its category, using `DENSE_RANK()` |
 | Cancellation Rate | Cancelled orders divided by total orders, multiplied by 100 |
+| Delivered Shipments | Number of shipments with a `delivered` status |
+| Delivery Rate | Delivered shipments divided by total shipments, multiplied by 100 |
+| Shipping Duration | Time difference between `shipped_at` and `delivered_at` for delivered shipments |
+| Average Shipping Duration | Average shipping duration across delivered shipments |
+| Longest Shipping Duration | Maximum shipping duration among delivered shipments |
+| Shortest Shipping Duration | Minimum shipping duration among delivered shipments |
 
 Order item values are calculated using:
 
@@ -129,7 +137,7 @@ Payment consistency is evaluated by comparing order statuses with payment status
 - [x] Product & Category Analysis
 - [x] Order Analysis
 - [x] Payment Analysis
-- [ ] Shipping Analysis
+- [x] Shipping Analysis
 - [ ] Data Quality Analysis
 
 ## Important Notes
@@ -143,6 +151,10 @@ Payment consistency is evaluated by comparing order statuses with payment status
 - Payment status distribution: 10 paid, 3 pending, and 2 failed.
 - The total payment amount is 19,110.00, while paid revenue is 15,750.00.
 - The missing payment records query currently returns no rows because every order has a matching payment record.
+- Shipping status distribution: 7 delivered, 3 in transit, 3 pending, and 2 cancelled.
+- The delivery rate is 46.67% (7 delivered shipments out of 15 total shipments).
+- All 7 delivered shipments have a shipping duration of 2 days in the current dataset.
+- The missing shipping records query currently returns no rows because every order has a matching shipping record.
 - Products with no sales are included in Product & Category Analysis with zero sales metrics.
 - Product rankings are calculated independently within each category.
 - Profit analysis is outside the current scope because product cost data is not available.
