@@ -2,11 +2,11 @@
 
 ## Project Overview
 
-This project analyzes an E-Commerce database using PostgreSQL to extract business insights through SQL queries.
+This project analyzes a synthetic E-Commerce database using PostgreSQL to extract business insights and evaluate operational performance through SQL queries.
 
-The main objective is to analyze sales performance, customer behavior, product performance, orders, payments, and shipping operations.
+The analysis covers sales performance, customer behavior, product performance, order management, payment operations, shipping operations, and data quality.
 
-The project demonstrates practical SQL skills used in Data Analysis and provides a foundation for further development toward Data Engineering.
+The project demonstrates practical SQL skills commonly used in Data Analysis and provides a foundation for further development toward Data Engineering.
 
 ## Tools & Technologies
 
@@ -26,15 +26,14 @@ The database contains seven tables:
 | `products` | Product details and stock |
 | `categories` | Product categories |
 | `orders` | Customer orders and order statuses |
-| `order_items` | Products and quantities within each order |
+| `order_items` | Products, quantities, and historical prices within each order |
 | `payments` | Payment amounts, methods, and statuses |
 | `shipping` | Shipping and delivery information |
 
 ## Analysis Scope
 
-The project is organized into the following analytical areas:
-
 ### 1. Sales Performance Analysis
+
 - Total orders and cancelled orders
 - Total order value
 - Valid sales value
@@ -42,12 +41,14 @@ The project is organized into the following analytical areas:
 - Average Order Value (AOV)
 
 ### 2. Customer Analysis
+
 - Customer spending
 - Order frequency
 - Top customers
 - Customer rankings
 
 ### 3. Product & Category Analysis
+
 - Best-selling products
 - Product revenue
 - Category performance
@@ -55,6 +56,7 @@ The project is organized into the following analytical areas:
 - Product ranking within each category
 
 ### 4. Order Analysis
+
 - Total, valid, and cancelled orders
 - Order status distribution
 - Cancellation rate
@@ -63,6 +65,7 @@ The project is organized into the following analytical areas:
 - Identification of orders requiring payment review
 
 ### 5. Payment Analysis
+
 - Payment status distribution
 - Payment amount and average amount by status
 - Payment method performance
@@ -70,6 +73,7 @@ The project is organized into the following analytical areas:
 - Missing payment records
 
 ### 6. Shipping Analysis
+
 - Shipping status distribution
 - Delivered shipments and delivery rate
 - Shipping duration per shipment
@@ -77,9 +81,13 @@ The project is organized into the following analytical areas:
 - Missing shipping records
 
 ### 7. Data Quality Analysis
-- Missing and inconsistent data
-- Order value and payment discrepancies
-- Data validation checks
+
+- Completeness checks for missing values
+- Uniqueness checks for duplicate records and database constraints
+- Validity checks for numeric values, timestamps, and categorical values
+- Referential integrity checks for orphan records
+- Consistency checks between orders, payments, and shipping
+- Comparison of payment amounts with calculated order values
 
 ## Repository Structure
 
@@ -92,6 +100,7 @@ ecommerce-sql-analytics/
 ├── 04_order_analysis.sql
 ├── 05_payment_analysis.sql
 ├── 06_shipping_analysis.sql
+├── 07_data_quality_analysis.sql
 └── README.md
 ```
 
@@ -126,39 +135,59 @@ Order item values are calculated using:
 quantity * unit_price
 ```
 
-Historical transaction prices from `order_items` are used instead of current product prices.
+Historical transaction prices from `order_items` are used instead of current product prices to preserve the prices recorded when orders were placed.
 
 Payment consistency is evaluated by comparing order statuses with payment statuses using predefined business rules. This classification does not confirm that payment was collected.
 
-## Current Progress
+## Key Findings
 
-- [x] Sales Performance Overview
-- [x] Customer Analysis
-- [x] Product & Category Analysis
-- [x] Order Analysis
-- [x] Payment Analysis
-- [x] Shipping Analysis
-- [ ] Data Quality Analysis
+### Sales & Payments
 
-## Important Notes
-
-- Cancelled orders are excluded from Valid Sales Value, AOV, and product sales metrics.
-- Pending and failed payments are not included in Paid Revenue.
-- Order Value and Paid Revenue represent different business metrics.
-- Payment consistency indicates whether order and payment statuses follow the defined business rules; it does not confirm that payment was collected.
-- The current synthetic dataset contains one payment record per order.
-- The current dataset contains 15 orders: 13 non-cancelled and 2 cancelled.
+- The dataset contains 15 orders: 13 non-cancelled and 2 cancelled.
+- Total Order Value: 19,110.00.
+- Valid Sales Value: 17,700.00.
+- Paid Revenue: 15,750.00.
+- Pending Payment Value: 1,950.00.
+- Failed Payment Value: 1,410.00.
+- Average Order Value: approximately 1,361.54.
 - Payment status distribution: 10 paid, 3 pending, and 2 failed.
-- The total payment amount is 19,110.00, while paid revenue is 15,750.00.
-- The missing payment records query currently returns no rows because every order has a matching payment record.
+
+### Customers & Products
+
+- Customer spending and rankings were calculated using non-cancelled orders.
+- Products with no sales were retained in the analysis.
+- Product rankings were calculated independently within each category.
+- Historical order item prices were used for revenue calculations.
+
+### Shipping
+
 - Shipping status distribution: 7 delivered, 3 in transit, 3 pending, and 2 cancelled.
-- The delivery rate is 46.67% (7 delivered shipments out of 15 total shipments).
+- Delivery Rate: 46.67% (7 delivered shipments out of 15).
 - All 7 delivered shipments have a shipping duration of 2 days in the current dataset.
-- The missing shipping records query currently returns no rows because every order has a matching shipping record.
-- Products with no sales are included in Product & Category Analysis with zero sales metrics.
-- Product rankings are calculated independently within each category.
+- Every order has a corresponding shipping record.
+
+### Data Quality
+
+- Five payment records have missing payment dates: three pending and two failed payments.
+- Missing shipping information is associated with pending or cancelled shipments.
+- No duplicate customer emails or multiple payment or shipping records per order were found.
+- No negative product prices, stock quantities, payment amounts, or unit prices were found.
+- No non-positive order item quantities were found.
+- No invalid shipping timestamp order was identified.
+- No orphan records were found in the tested foreign key relationships.
+- All observed order, payment, and shipping status combinations matched the business rules used in the analysis.
+- Payment amounts matched calculated order values for all 15 orders.
+- No data was modified during the data quality analysis. Missing values were investigated rather than automatically replaced.
+
+## Limitations & Assumptions
+
+- The database contains a small synthetic dataset intended for SQL practice and portfolio development.
+- The current dataset contains one payment record and one shipping record per order.
+- Payment consistency checks evaluate status alignment; they do not independently verify successful fund collection.
+- Missing payment dates for failed transactions require further business context before they can be classified as errors.
+- Formal allowed-value definitions for categorical fields were not available.
 - Profit analysis is outside the current scope because product cost data is not available.
-- The database is a small synthetic dataset intended for SQL practice and portfolio development.
+- The delivery rate represents the current proportion of delivered shipments, not necessarily the final delivery success rate.
 
 ## Author
 
