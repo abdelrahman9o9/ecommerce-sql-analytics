@@ -1,4 +1,4 @@
-# E-Commerce SQL Analytics
+# E-Commerce SQL Analytics | PostgreSQL Project
 
 ## Project Overview
 
